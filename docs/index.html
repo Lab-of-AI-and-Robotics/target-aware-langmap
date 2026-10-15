@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Training-Free Target-Aware Refinement of 3D Gaussian Language Map">
+  <meta name="description" content="A training-free, target-aware refinement that makes user-specified targets reliably retrievable in 3D Gaussian language maps while keeping them open-vocabulary.">
+  <meta name="keywords" content="3D Gaussian Splatting, language map, open-vocabulary, language-goal navigation, vision-language model, robotics">
+  <meta name="author" content="Sibaek Lee, Kyeongsu Kang, Seongbo Ha, Yewon Jeon, Joonyeol Choi, Daegeol Ko, Jaehyuk Hur, Taemin Choi, Minsu Kim, Hyungjoo Ahn, Wonsok Yoo, Hyeonwoo Yu">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <link rel="canonical" href="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Lab of AI and Robotics, Sungkyunkwan University">
+  <meta property="og:title" content="Training-Free Target-Aware Refinement of 3D Gaussian Language Map">
+  <meta property="og:description" content="A training-free, target-aware refinement that makes user-specified targets reliably retrievable in 3D Gaussian language maps while keeping them open-vocabulary.">
+  <meta property="og:url" content="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/">
+  <meta property="og:image" content="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/static/images/fig_teaser.png">
+  <meta property="og:image:alt" content="Training-Free Target-Aware Refinement of 3D Gaussian Language Map">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Training-Free Target-Aware Refinement of 3D Gaussian Language Map">
+  <meta name="twitter:description" content="A training-free, target-aware refinement that makes user-specified targets reliably retrievable in 3D Gaussian language maps while keeping them open-vocabulary.">
+  <meta name="twitter:image" content="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/static/images/fig_teaser.png">
+
+  <!-- Google Scholar -->
+  <meta name="citation_title" content="Training-Free Target-Aware Refinement of 3D Gaussian Language Map">
+  <meta name="citation_author" content="Lee, Sibaek">
+  <meta name="citation_author" content="Kang, Kyeongsu">
+  <meta name="citation_author" content="Ha, Seongbo">
+  <meta name="citation_author" content="Jeon, Yewon">
+  <meta name="citation_author" content="Choi, Joonyeol">
+  <meta name="citation_author" content="Ko, Daegeol">
+  <meta name="citation_author" content="Hur, Jaehyuk">
+  <meta name="citation_author" content="Choi, Taemin">
+  <meta name="citation_author" content="Kim, Minsu">
+  <meta name="citation_author" content="Ahn, Hyungjoo">
+  <meta name="citation_author" content="Yoo, Wonsok">
+  <meta name="citation_author" content="Yu, Hyeonwoo">
+  <meta name="citation_publication_date" content="2026">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>Training-Free Target-Aware Refinement of 3D Gaussian Language Map</title>
+  <link rel="icon" href="data:,">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Training-Free Target-Aware Refinement of 3D Gaussian Language Map",
+  "description": "A training-free, target-aware refinement that makes user-specified targets reliably retrievable in 3D Gaussian language maps while keeping them open-vocabulary.",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Sibaek Lee",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Kyeongsu Kang",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Seongbo Ha",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Yewon Jeon",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Joonyeol Choi",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Daegeol Ko",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Jaehyuk Hur",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Taemin Choi",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Samsung Electronics"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Minsu Kim",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Samsung Electronics"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Hyungjoo Ahn",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Samsung Electronics"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Wonsok Yoo",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Samsung Electronics"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Hyeonwoo Yu",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Sungkyunkwan University"
+      }
+    }
+  ],
+  "datePublished": "2026",
+  "url": "https://lab-of-ai-and-robotics.github.io/target-aware-langmap/",
+  "image": "https://lab-of-ai-and-robotics.github.io/target-aware-langmap/static/images/fig_teaser.png",
+  "keywords": [
+    "3D Gaussian Splatting",
+    "language map",
+    "open-vocabulary",
+    "language-goal navigation",
+    "vision-language model",
+    "robotics"
+  ],
+  "isAccessibleForFree": true,
+  "mainEntity": {
+    "@type": "WebPage",
+    "@id": "https://lab-of-ai-and-robotics.github.io/target-aware-langmap/"
+  },
+  "codeRepository": "https://github.com/Lab-of-AI-and-Robotics/target-aware-langmap"
+}
+  </script>
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">Training-Free Target-Aware Refinement of 3D Gaussian Language Map</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://sibaek-lee.github.io/" target="_blank">Sibaek Lee</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://sites.google.com/view/thithin/" target="_blank">Kyeongsu Kang</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://riboha.github.io/" target="_blank">Seongbo Ha</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://yyonyy.github.io/" target="_blank">Yewon Jeon</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://joonyeolchoiskku.github.io/" target="_blank">Joonyeol Choi</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://daegeol.github.io/" target="_blank">Daegeol Ko</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://broadleaf-option-c34.notion.site/Jaehyuk-Hur-34660dadf71c4d3db77919610432e5c5" target="_blank">Jaehyuk Hur</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="./">Taemin Choi</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="./">Minsu Kim</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="./">Hyungjoo Ahn</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="./">Wonsok Yoo</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://bogus2000.github.io/" target="_blank">Hyeonwoo Yu</a><sup>1</sup></span>
+            </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Sungkyunkwan University &nbsp;&nbsp; <sup>2</sup>Samsung Electronics</span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- TODO(arXiv): point to arXiv once the ID is out -->
+                      <span class="link-block">
+                        <a href="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                    <!-- TODO: 유튜브에 final.mp4 업로드 후 링크 교체 -->
+                    <span class="link-block">
+                      <a href="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="https://github.com/Lab-of-AI-and-Robotics/target-aware-langmap" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- TODO(arXiv): point to arXiv once the ID is out -->
+                <span class="link-block">
+                  <a href="https://lab-of-ai-and-robotics.github.io/target-aware-langmap/" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+
+
+<!-- Video carousel -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Real-World Navigation Demo</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-video1">
+          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/01_post_box.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;I need to mail this letter.&rdquo; &nbsp;&rarr;&nbsp; target: post box
+          </h2>
+        </div>
+        <div class="item item-video2">
+          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/02_atm_machine.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;I need some cash.&rdquo; &nbsp;&rarr;&nbsp; target: atm machine
+          </h2>
+        </div>
+        <div class="item item-video3">
+          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/03_caution_sign.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;Where is the caution sign?&rdquo; &nbsp;&rarr;&nbsp; target: caution sign
+          </h2>
+        </div>
+        <div class="item item-video4">
+          <video poster="" id="video4" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/04_outlet.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;My battery is dying. I want to charge my phone.&rdquo; &nbsp;&rarr;&nbsp; target: outlet
+          </h2>
+        </div>
+        <div class="item item-video5">
+          <video poster="" id="video5" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/05_lego_dobby.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;Where is the lego?&rdquo; &nbsp;&rarr;&nbsp; target: lego dobby
+          </h2>
+        </div>
+        <div class="item item-video6">
+          <video poster="" id="video6" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/06_whiteboard.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;I want to write something down.&rdquo; &nbsp;&rarr;&nbsp; target: whiteboard
+          </h2>
+        </div>
+        <div class="item item-video7">
+          <video poster="" id="video7" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/07_fire_extinguisher.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            &ldquo;I think something is on fire. What should I do?&rdquo; &nbsp;&rarr;&nbsp; target: fire extinguisher
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End video carousel -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose a training-free, target-aware refinement of 3D Gaussian language maps. The visual embedding inside each detected target region is blended toward the target text, with every blending coefficient obtained in closed form, and a centered read-out removes the query-agnostic bias that injection creates. The refinement roughly doubles the base mIoU on Replica, localizes language goals more reliably across three benchmarks, and transfers as a plug-in to field-based and object-level language maps. A legged robot then navigates to free-form natural-language goals on a real building floor.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<!-- Teaser figure -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <img src="static/images/fig_teaser.png" alt="Teaser figure" loading="lazy"/>
+      <h2 class="subtitle has-text-centered" style="font-size:1.1rem;">
+        Target-aware refinement makes target queries reliably localizable while the map stays open-vocabulary.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Method -->
+<section class="section hero is-light">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Method</h2>
+      <img src="static/images/overview.png" alt="Method overview" loading="lazy"/>
+      <h2 class="subtitle has-text-centered" style="font-size:1.1rem;">
+        1) Per-view target-aware injection &nbsp;&middot;&nbsp; 2) Closed-form minimal strength &nbsp;&middot;&nbsp; 3) Lift and centered read-out
+      </h2>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Results</h2>
+      <div class="columns is-centered has-text-centered" style="margin-bottom:2rem;">
+        <div class="column">
+          <p class="heading">Open-vocab segmentation &middot; Replica mIoU</p>
+          <p class="title is-3">0.21 <span style="color:#1e8e3e;">&rarr; 0.44</span></p>
+        </div>
+        <div class="column">
+          <p class="heading">Goal localization &middot; top-1, 3 datasets</p>
+          <p class="title is-3">50.3 <span style="color:#1e8e3e;">&rarr; 64.0 %</span></p>
+        </div>
+        <div class="column">
+          <p class="heading">Plug-in on LangSplat &middot; Replica mIoU</p>
+          <p class="title is-3">0.18 <span style="color:#1e8e3e;">&rarr; 0.32</span></p>
+        </div>
+      </div>
+      <h2 class="subtitle has-text-centered" style="font-weight:600;">&ldquo;Where is the refrigerator?&rdquo;</h2>
+      <div class="columns is-centered">
+        <div class="column">
+          <img src="static/images/heat_base.png" alt="Base heatmap" loading="lazy" style="border:4px solid #c82828; border-radius:6px;"/>
+          <h2 class="subtitle has-text-centered" style="color:#c82828; font-weight:700;">Base &mdash; diffuse</h2>
+        </div>
+        <div class="column">
+          <img src="static/images/heat_ours.png" alt="Ours heatmap" loading="lazy" style="border:4px solid #1e8e3e; border-radius:6px;"/>
+          <h2 class="subtitle has-text-centered" style="color:#1e8e3e; font-weight:700;">Ours &mdash; localized</h2>
+        </div>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        The raw read-out spreads over the room; the refined map lands on the target.
+      </h2>
+
+      <h2 class="subtitle has-text-centered" style="font-weight:600; margin-top:3rem;">&ldquo;Blue cushion&rdquo; &mdash; appearance is preserved</h2>
+      <img src="static/images/fig_instattr.jpg" alt="Instance-level discrimination of the blue cushions" loading="lazy" width="1600" height="383" style="width:100%; height:auto;"/>
+      <h2 class="subtitle has-text-centered">
+        Pasting the class text (&alpha;=1) collapses all nine cushions into one feature. Our minimal injection keeps their appearance and ranks the blue pair (cyan boxes) on top.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Youtube video -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- BibTeX hidden until arXiv is out (restore by removing this wrapper)
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@article{lee2026targetaware,
+  title={Training-Free Target-Aware Refinement of 3D Gaussian Language Map},
+  author={Lee, Sibaek and Kang, Kyeongsu and Ha, Seongbo and Jeon, Yewon and Choi, Joonyeol and Ko, Daegeol and Hur, Jaehyuk and Choi, Taemin and Kim, Minsu and Ahn, Hyungjoo and Yoo, Wonsok and Yu, Hyeonwoo},
+  journal={arXiv preprint},
+  year={2026}
+}</code></pre>
+    </div>
+</section>
+
+-->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
