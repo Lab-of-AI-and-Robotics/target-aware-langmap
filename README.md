@@ -2,18 +2,18 @@
 
 # Training-Free Target-Aware Refinement of 3D Gaussian Language Map
 
-[Sibaek Lee](https://sibaek-lee.github.io/)<sup>1</sup>,
-[Kyeongsu Kang](https://sites.google.com/view/thithin/)<sup>1</sup>,
-[Seongbo Ha](https://riboha.github.io/)<sup>1</sup>,
-[Yewon Jeon](https://yyonyy.github.io/)<sup>1</sup>,
-[Joonyeol Choi](https://joonyeolchoiskku.github.io/)<sup>1</sup>,
-[Daegeol Ko](https://daegeol.github.io/)<sup>1</sup>,
-[Jaehyuk Hur](https://broadleaf-option-c34.notion.site/Jaehyuk-Hur-34660dadf71c4d3db77919610432e5c5)<sup>1</sup>,<br>
+Sibaek Lee<sup>1</sup>,
+Kyeongsu Kang<sup>1</sup>,
+Seongbo Ha<sup>1</sup>,
+Yewon Jeon<sup>1</sup>,
+Joonyeol Choi<sup>1</sup>,
+Daegeol Ko<sup>1</sup>,
+Jaehyuk Hur<sup>1</sup>,<br>
 Taemin Choi<sup>2</sup>,
 Minsu Kim<sup>2</sup>,
 Hyungjoo Ahn<sup>2</sup>,
 Wonsok Yoo<sup>2</sup>,
-[Hyeonwoo Yu](https://bogus2000.github.io/)<sup>1</sup>
+Hyeonwoo Yu<sup>1</sup>
 
 <sup>1</sup>Sungkyunkwan University &nbsp;&nbsp; <sup>2</sup>Samsung Electronics
 
